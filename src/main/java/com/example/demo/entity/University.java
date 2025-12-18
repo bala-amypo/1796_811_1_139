@@ -11,10 +11,14 @@ public class University {
     private String name;
     private String accreditationLevel;
     private String country; 
-    private boolean active = true;
+    private boolean active;
 
-    public University(Long id, String name, String accreditationLevel, String country, boolean active){
-        
+    public University(Long id, String name, String accreditationLevel, String country, boolean active = true;){
+        this.id = id;
+        this.name = name;
+        this.accreditationLevel = accreditationLevel;
+        this.country = country;
+        this.active 
     }
 
     public Long getId() { 
