@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class University {
 
     @Id @GeneratedValue 
-    @Column 
+    @Column unique = true
     private Long id;
     private String name;
     private String accreditationLevel;
