@@ -323,7 +323,7 @@ public class FullProjectTest {
         });
         TransferRule created = ruleService.createRule(r);
         Assert.assertEquals(created.getId().longValue(), 50L);
-    
+    }
 
     // Evaluation tests
     @Test(priority=20, groups={"evaluation"}, description="Evaluate transfer without rule")
