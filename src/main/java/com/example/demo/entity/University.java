@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 public class University {
 
     @Id @GeneratedValue 
-    @Column unique = true
     private Long id;
+    @Column(unique=true)
     private String name;
     private String accreditationLevel;
     private String country; 
@@ -27,6 +27,16 @@ public class University {
     public void setName(String name) {
         this.name = name; 
     }
+    public String getAccreditationLevel(){
+        return accreditationLevel;
+    }
+    public void setAccreditationLevel(String accreditationLevel){
+        this.accreditationLevel = accreditationLevel;
+    }
+    public String getCountry(){
+        return country;
+    }
+    public void setCountry(){}
     public boolean isActive() {
         return active; 
     }
