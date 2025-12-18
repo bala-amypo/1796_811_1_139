@@ -13,7 +13,9 @@ public class University {
     private String country; 
     private boolean active = true;
 
-    public University(Long id, String name, )
+    public University(Long id, String name, String accreditationLevel, String country, boolean active){
+        
+    }
 
     public Long getId() { 
         return id;
@@ -36,7 +38,9 @@ public class University {
     public String getCountry(){
         return country;
     }
-    public void setCountry(){}
+    public void setCountry(String country){
+        this.country = country;
+    }
     public boolean isActive() {
         return active; 
     }
