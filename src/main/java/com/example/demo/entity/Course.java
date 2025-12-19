@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
 public class Course {
 
@@ -22,8 +21,10 @@ public class Course {
     @ManyToOne
     private University university;
 
-    // ---------- Getters & Setters ----------
+    public Course() {
+    }
 
+    // getters & setters
     public Long getId() {
         return id;
     }

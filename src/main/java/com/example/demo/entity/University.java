@@ -5,9 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-
 @Entity
 public class University {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,14 +15,11 @@ public class University {
     private String name;
     private boolean active = true;
 
-    public University(){
+    // ✅ REQUIRED: no-arg constructor
+    public University() {
     }
 
-    public University(Long id,String name, boolean active) {
-        this.name = name;
-        this.active = active;
-    }
-
+    // getters & setters
     public Long getId() {
         return id;
     }
