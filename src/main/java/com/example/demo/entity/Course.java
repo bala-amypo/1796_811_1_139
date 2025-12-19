@@ -1,25 +1,74 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+
 @Entity
 public class Course {
- @Id @GeneratedValue
- private Long id;
- private String courseCode;
- private String courseName;
- private int creditHours;
- private boolean active = true;
 
- @ManyToOne
- private University university;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
- public Long getId(){return id;} 
- public void setId(Long id){this.id=id;}
- public String getCourseCode(){return courseCode;}
- public void setCourseCode(String c){this.courseCode=c;}
- public String getCourseName(){return courseName;}
- public void setCourseName(String n){this.courseName=n;}
- public int getCreditHours(){return creditHours;}
- public void setCreditHours(int c){this.creditHours=c;}
- public boolean isActive(){return active;}
- public void setActive(boolean a){this.active=a;}
- public University getUniversity(){return university;}
- public void setUniversity(University u){this.university=u;}
+    private String courseCode;
+    private String courseName;
+    private int creditHours;
+    private boolean active = true;
+
+    @ManyToOne
+    private University university;
+
+    // ---------- Getters & Setters ----------
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public int getCreditHours() {
+        return creditHours;
+    }
+
+    public void setCreditHours(int creditHours) {
+        this.creditHours = creditHours;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
 }
