@@ -4,9 +4,9 @@ import com.example.demo.entity.University;
 
 public interface UniversityService {
 
-    University createUniversity(University u);
+    University createUniversity(University university);
 
-    University updateUniversity(Long id, University u);
+    University updateUniversity(Long id, University university);
 
     University getUniversityById(Long id);
 
