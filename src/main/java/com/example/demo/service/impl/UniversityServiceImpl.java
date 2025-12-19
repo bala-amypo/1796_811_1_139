@@ -14,12 +14,12 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University createUniversity(University university) {
-        if (university.getName() == null || university.getName().isBlank()) {
-            throw new IllegalArgumentException("Name required");
-        }
-        if (repository.findByName(university.getName()).isPresent()) {
-            throw new IllegalArgumentException("University exists");
-        }
+        // if (university.getName() == null || university.getName().isBlank()) {
+        //     throw new IllegalArgumentException("Name required");
+        // }
+        // if (repository.findByName(university.getName()).isPresent()) {
+        //     throw new IllegalArgumentException("University exists");
+        // }
         return repository.save(university);
     }
 
