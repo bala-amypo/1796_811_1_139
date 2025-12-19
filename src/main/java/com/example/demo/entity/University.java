@@ -9,9 +9,6 @@ import jakarta.persistence.Id;
 @Entity
 public class University {
 
-    public University(String name) {
-    this.name = name;
-}
 
 
     @Id
@@ -19,8 +16,12 @@ public class University {
     private Long id;
 
     private String name;
-    private boolean active = true;
+    private boolean active;
 
+    public University(String name, boolean active = true) {
+        this.name = name;
+        t
+    }
 
     public Long getId() {
         return id;
