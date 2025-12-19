@@ -1,19 +1,55 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
 @Entity
 public class CourseContentTopic {
- @Id @GeneratedValue
- private Long id;
- private String topicName;
- private Double weightPercentage;
 
- @ManyToOne
- private Course course;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
- public Long getId(){return id;}
- public void setId(Long id){this.id=id;}
- public String getTopicName(){return topicName;}
- public void setTopicName(String t){this.topicName=t;}
- public Double getWeightPercentage(){return weightPercentage;}
- public void setWeightPercentage(Double w){this.weightPercentage=w;}
- public Course getCourse(){return course;}
- public void setCourse(Course c){this.course=c;}
+    private String topicName;
+    private Double weightPercentage;
+
+    @ManyToOne
+    private Course course;
+
+    // ---------- Getters & Setters ----------
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+
+    public Double getWeightPercentage() {
+        return weightPercentage;
+    }
+
+    public void setWeightPercentage(Double weightPercentage) {
+        this.weightPercentage = weightPercentage;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }
