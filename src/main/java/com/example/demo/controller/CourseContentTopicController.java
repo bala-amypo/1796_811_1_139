@@ -21,8 +21,7 @@ public class CourseContentTopicController {
     }
 
     @PutMapping("/{id}")
-    public CourseContentTopic updateTopic(@PathVariable Long id,
-                                          @RequestBody CourseContentTopic topic) {
+    public CourseContentTopic updateTopic(@PathVariable Long id, @RequestBody CourseContentTopic topic) {
         return topicService.updateTopic(id, topic);
     }
 
