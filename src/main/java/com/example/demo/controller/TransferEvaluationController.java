@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TransferEvaluationResult;
-import com.example.demo.service.TransferEvaluationService;
+import com.example.demo.service.impl.TransferEvaluationServiceImpl;
 
 @RestController
 @RequestMapping("/evaluations")
 public class TransferEvaluationController {
 
     @Autowired
-    private TransferEvaluationService evaluationService;
+    private TransferEvaluationServiceImpl evaluationService;
 
     @PostMapping
     public TransferEvaluationResult evaluateTransfer(

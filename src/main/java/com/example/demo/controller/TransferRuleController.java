@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TransferRule;
-import com.example.demo.service.TransferRuleService;
+import com.example.demo.service.impl.TransferRuleServiceImpl;
 
 @RestController
 @RequestMapping("/rules")
 public class TransferRuleController {
 
     @Autowired
-    private TransferRuleService ruleService;
+    private TransferRuleServiceImpl ruleService;
 
     @PostMapping
     public TransferRule createRule(@RequestBody TransferRule rule) {

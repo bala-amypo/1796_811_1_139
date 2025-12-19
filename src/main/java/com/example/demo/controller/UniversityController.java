@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.University;
-import com.example.demo.service.UniversityService;
+import com.example.demo.service.impl.UniversityServiceImpl;
 
 @RestController
 @RequestMapping("/universities")
 public class UniversityController {
 
     @Autowired
-    private UniversityService universityService;
+    private UniversityServiceImpl universityService;
 
     @PostMapping
     public University createUniversity(@RequestBody University university) {

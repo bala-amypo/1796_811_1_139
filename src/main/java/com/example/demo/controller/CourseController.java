@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Course;
-import com.example.demo.service.CourseService;
+import com.example.demo.service.impl.CourseServiceImpl;
 
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
-    private CourseService courseService;
+    private CourseServiceImpl courseService;
 
     @PostMapping
     public Course createCourse(@RequestBody Course course) {

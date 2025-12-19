@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.CourseContentTopic;
-import com.example.demo.service.CourseContentTopicService;
+import com.example.demo.service.impl.CourseContentTopicServiceImpl;
 
 @RestController
 @RequestMapping("/topics")
 public class CourseContentTopicController {
 
     @Autowired
-    private CourseContentTopicService topicService;
+    private CourseContentTopicServiceImpl topicService;
 
     @PostMapping
     public CourseContentTopic createTopic(@RequestBody CourseContentTopic topic) {
