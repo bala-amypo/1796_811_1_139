@@ -8,5 +8,5 @@ import com.example.demo.entity.University;
 
 public interface UniversityRepository extends JpaRepository<University, Long> {
 
-    Optional<University> findByName(String name);
+    public Optional<University> findByName(String name);
 }

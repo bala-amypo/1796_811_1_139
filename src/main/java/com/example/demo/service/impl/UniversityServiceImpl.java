@@ -5,10 +5,11 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.University;
 import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.UniversityService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
-
+    @Autowired
     private UniversityRepository repository;
 
     @Override
