@@ -8,9 +8,6 @@ import jakarta.persistence.Id;
 
 @Entity
 public class University {
-
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
