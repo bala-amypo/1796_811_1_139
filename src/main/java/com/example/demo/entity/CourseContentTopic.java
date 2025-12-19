@@ -19,8 +19,10 @@ public class CourseContentTopic {
     @ManyToOne
     private Course course;
 
-    // ---------- Getters & Setters ----------
+    public CourseContentTopic() {
+    }
 
+    // getters & setters
     public Long getId() {
         return id;
     }

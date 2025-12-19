@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
 public class TransferRule {
 
@@ -14,39 +13,26 @@ public class TransferRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Double minimumOverlapPercentage;
+    private Integer creditHourTolerance;
+    private boolean active = true;
+
     @ManyToOne
     private University sourceUniversity;
 
     @ManyToOne
     private University targetUniversity;
 
-    private Double minimumOverlapPercentage;
-    private Integer creditHourTolerance;
-    private boolean active = true;
+    public TransferRule() {
+    }
 
-
+    // getters & setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public University getSourceUniversity() {
-        return sourceUniversity;
-    }
-
-    public void setSourceUniversity(University sourceUniversity) {
-        this.sourceUniversity = sourceUniversity;
-    }
-
-    public University getTargetUniversity() {
-        return targetUniversity;
-    }
-
-    public void setTargetUniversity(University targetUniversity) {
-        this.targetUniversity = targetUniversity;
     }
 
     public Double getMinimumOverlapPercentage() {
@@ -71,5 +57,21 @@ public class TransferRule {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public University getSourceUniversity() {
+        return sourceUniversity;
+    }
+
+    public void setSourceUniversity(University sourceUniversity) {
+        this.sourceUniversity = sourceUniversity;
+    }
+
+    public University getTargetUniversity() {
+        return targetUniversity;
+    }
+
+    public void setTargetUniversity(University targetUniversity) {
+        this.targetUniversity = targetUniversity;
     }
 }

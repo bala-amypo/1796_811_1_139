@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-
 
 @Entity
 public class TransferEvaluationResult {
@@ -17,14 +15,12 @@ public class TransferEvaluationResult {
     private Boolean isEligibleForTransfer;
     private Double overlapPercentage;
     private String notes;
+    private Long sourceCourseId;
 
-    @ManyToOne
-    private Course sourceCourse;
+    public TransferEvaluationResult() {
+    }
 
-    @ManyToOne
-    private Course targetCourse;
-
-
+    // getters & setters
     public Long getId() {
         return id;
     }
@@ -57,19 +53,11 @@ public class TransferEvaluationResult {
         this.notes = notes;
     }
 
-    public Course getSourceCourse() {
-        return sourceCourse;
+    public Long getSourceCourseId() {
+        return sourceCourseId;
     }
 
-    public void setSourceCourse(Course sourceCourse) {
-        this.sourceCourse = sourceCourse;
-    }
-
-    public Course getTargetCourse() {
-        return targetCourse;
-    }
-
-    public void setTargetCourse(Course targetCourse) {
-        this.targetCourse = targetCourse;
+    public void setSourceCourseId(Long sourceCourseId) {
+        this.sourceCourseId = sourceCourseId;
     }
 }
