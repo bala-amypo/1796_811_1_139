@@ -2,37 +2,38 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.University;
 import com.example.demo.repository.UniversityRepository;
-import com.example.demo.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UniversityServiceImpl implements UniversityService {
+public class UniversityServiceImpl {
 
     @Autowired
     private UniversityRepository repository;
 
-    @Override
-    public University createUniversity(University u) {
-        return repository.save(u);
+    public University createUniversity(University university) {
+        if (university.getName() == null || university.getName().isBlank()) {
+            throw new IllegalArgumentException("University name required");
+        }
+        return repository.save(university);
     }
 
-    @Override
-    public University updateUniversity(Long id, University u) {
-        University ex = repository.findById(id).orElseThrow();
-        ex.setName(u.getName());
-        return repository.save(ex);
+    public University updateUniversity(Long id, University university) {
+        University existing = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("University not found"));
+        existing.setName(university.getName());
+        return repository.save(existing);
     }
 
-    @Override
     public University getUniversityById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("University not found"));
     }
 
-    @Override
     public void deactivateUniversity(Long id) {
-        University u = repository.findById(id).orElseThrow();
-        u.setActive(false);
-        repository.save(u);
+        University university = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("University not found"));
+        university.setActive(false);
+        repository.save(university);
     }
 }
