@@ -9,7 +9,10 @@ import jakarta.persistence.Id;
 @Entity
 public class University {
 
-    public 
+    public University(String name) {
+    this.name = name;
+}
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
