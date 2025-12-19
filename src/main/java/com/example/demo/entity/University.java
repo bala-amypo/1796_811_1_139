@@ -18,6 +18,9 @@ public class University {
     private String name;
     private boolean active = true;
 
+    public University(){
+    }
+
     public University(String name, boolean active) {
         this.name = name;
         this.active = active;
