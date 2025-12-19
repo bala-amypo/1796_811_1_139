@@ -16,11 +16,11 @@ public class University {
     private Long id;
 
     private String name;
-    private boolean active;
+    private boolean active = true;
 
-    public University(String name, boolean active = true) {
+    public University(String name, boolean active) {
         this.name = name;
-        t
+        this.active = active;
     }
 
     public Long getId() {
