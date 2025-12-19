@@ -18,7 +18,7 @@ public class University {
     public University(){
     }
 
-    public University(String name, boolean active) {
+    public University(Long id,String name, boolean active) {
         this.name = name;
         this.active = active;
     }
