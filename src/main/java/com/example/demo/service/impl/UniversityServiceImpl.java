@@ -8,39 +8,27 @@ import com.example.demo.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-public class UniversityServiceImpl implements UniversityService {
+public class UniversityServiceImpl {
+
     @Autowired
     private UniversityRepository repository;
 
-    @Override
-    public University createUniversity(University university) {
-        if (university.getName() == null || university.getName().isBlank()) {
-            throw new IllegalArgumentException("Name required");
-        }
-        if (repository.findByName(university.getName()).isPresent()) {
-            throw new IllegalArgumentException("University exists");
-        }
-        return repository.save(university);
+    public University createUniversity(University u) {
+        return repository.save(u);
     }
 
-    @Override
-    public University updateUniversity(Long id, University university) {
-        University existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found"));
-        existing.setName(university.getName());
-        return repository.save(existing);
+    public University updateUniversity(Long id, University u) {
+        University ex = repository.findById(id).orElseThrow();
+        ex.setName(u.getName());
+        return repository.save(ex);
     }
 
-    @Override
     public University getUniversityById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found"));
+        return repository.findById(id).orElseThrow();
     }
 
-    @Override
     public void deactivateUniversity(Long id) {
-        University u = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found"));
+        University u = repository.findById(id).orElseThrow();
         u.setActive(false);
         repository.save(u);
     }
