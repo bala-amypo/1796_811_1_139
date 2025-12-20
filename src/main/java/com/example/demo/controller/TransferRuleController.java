@@ -2,41 +2,45 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TransferRule;
-import com.example.demo.service.impl.TransferRuleServiceImpl;
+import com.example.demo.service.TransferRuleService;
 
 @RestController
 @RequestMapping("/rules")
 public class TransferRuleController {
 
-    @Autowired
-    private TransferRuleServiceImpl ruleService;
+    private final TransferRuleService service;
+
+    public TransferRuleController(TransferRuleService service) {
+        this.service = service;
+    }
 
     @PostMapping
-    public TransferRule createRule(@RequestBody TransferRule rule) {
-        return ruleService.createRule(rule);
+    public TransferRule create(@RequestBody TransferRule rule) {
+        return service.createRule(rule);
     }
 
     @PutMapping("/{id}")
-    public TransferRule updateRule(@PathVariable Long id, @RequestBody TransferRule rule) {
-        return ruleService.updateRule(id, rule);
+    public TransferRule update(@PathVariable Long id, @RequestBody TransferRule rule) {
+        return service.updateRule(id, rule);
     }
 
     @GetMapping("/{id}")
-    public TransferRule getRule(@PathVariable Long id) {
-        return ruleService.getRuleById(id);
+    public TransferRule getById(@PathVariable Long id) {
+        return service.getRuleById(id);
     }
 
-    @GetMapping("/universities")
-    public List<TransferRule> getRules(@RequestParam Long sourceUniversityId, @RequestParam Long targetUniversityId) {
-        return ruleService.getRulesForUniversities(sourceUniversityId, targetUniversityId);
+    @GetMapping("/between")
+    public List<TransferRule> getRules(
+            @RequestParam Long sourceUniversityId,
+            @RequestParam Long targetUniversityId) {
+        return service.getRulesForUniversities(sourceUniversityId, targetUniversityId);
     }
 
     @DeleteMapping("/{id}")
-    public void deactivateRule(@PathVariable Long id) {
-        ruleService.deactivateRule(id);
+    public void deactivate(@PathVariable Long id) {
+        service.deactivateRule(id);
     }
 }
