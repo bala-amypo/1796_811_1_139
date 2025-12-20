@@ -1,34 +1,36 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.List;
 
-@Entity
-public class TransferEvaluationResult {
+import org.springframework.web.bind.annotation.*;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.entity.TransferEvaluationResult;
+import com.example.demo.service.TransferEvaluationService;
 
-    private Boolean isEligibleForTransfer;
-    private Double overlapPercentage;
-    private String notes;
-    private Long sourceCourseId;
+@RestController
+@RequestMapping("/evaluations")
+public class TransferEvaluationController {
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private final TransferEvaluationService service;
 
-    public Boolean getIsEligibleForTransfer() { return isEligibleForTransfer; }
-    public void setIsEligibleForTransfer(Boolean eligible) { this.isEligibleForTransfer = eligible; }
+    public TransferEvaluationController(TransferEvaluationService service) {
+        this.service = service;
+    }
 
-    public Double getOverlapPercentage() { return overlapPercentage; }
-    public void setOverlapPercentage(Double overlapPercentage) { this.overlapPercentage = overlapPercentage; }
+    @PostMapping
+    public TransferEvaluationResult evaluate(
+            @RequestParam Long sourceCourseId,
+            @RequestParam Long targetCourseId) {
+        return service.evaluateTransfer(sourceCourseId, targetCourseId);
+    }
 
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    @GetMapping("/{id}")
+    public TransferEvaluationResult getById(@PathVariable Long id) {
+        return service.getEvaluationById(id);
+    }
 
-    public Long getSourceCourseId() { return sourceCourseId; }
-    public void setSourceCourseId(Long sourceCourseId) { this.sourceCourseId = sourceCourseId; }
+    @GetMapping("/course/{courseId}")
+    public List<TransferEvaluationResult> getByCourse(@PathVariable Long courseId) {
+        return service.getEvaluationsForCourse(courseId);
+    }
 }

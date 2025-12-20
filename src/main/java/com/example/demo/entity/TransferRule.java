@@ -13,65 +13,31 @@ public class TransferRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double minimumOverlapPercentage;
-    private Integer creditHourTolerance;
-    private boolean active = true;
-
     @ManyToOne
     private University sourceUniversity;
 
     @ManyToOne
     private University targetUniversity;
 
-    public TransferRule() {
-    }
+    private Double minimumOverlapPercentage;
+    private Integer creditHourTolerance = 0;
+    private boolean active = true;
 
-    // getters & setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public University getSourceUniversity() { return sourceUniversity; }
+    public void setSourceUniversity(University sourceUniversity) { this.sourceUniversity = sourceUniversity; }
 
-    public Double getMinimumOverlapPercentage() {
-        return minimumOverlapPercentage;
-    }
+    public University getTargetUniversity() { return targetUniversity; }
+    public void setTargetUniversity(University targetUniversity) { this.targetUniversity = targetUniversity; }
 
-    public void setMinimumOverlapPercentage(Double minimumOverlapPercentage) {
-        this.minimumOverlapPercentage = minimumOverlapPercentage;
-    }
+    public Double getMinimumOverlapPercentage() { return minimumOverlapPercentage; }
+    public void setMinimumOverlapPercentage(Double minimumOverlapPercentage) { this.minimumOverlapPercentage = minimumOverlapPercentage; }
 
-    public Integer getCreditHourTolerance() {
-        return creditHourTolerance;
-    }
+    public Integer getCreditHourTolerance() { return creditHourTolerance; }
+    public void setCreditHourTolerance(Integer creditHourTolerance) { this.creditHourTolerance = creditHourTolerance; }
 
-    public void setCreditHourTolerance(Integer creditHourTolerance) {
-        this.creditHourTolerance = creditHourTolerance;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public University getSourceUniversity() {
-        return sourceUniversity;
-    }
-
-    public void setSourceUniversity(University sourceUniversity) {
-        this.sourceUniversity = sourceUniversity;
-    }
-
-    public University getTargetUniversity() {
-        return targetUniversity;
-    }
-
-    public void setTargetUniversity(University targetUniversity) {
-        this.targetUniversity = targetUniversity;
-    }
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
