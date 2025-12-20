@@ -21,10 +21,6 @@ public class Course {
     @ManyToOne
     private University university;
 
-    public Course() {
-    }
-
-    // getters & setters
     public Long getId() {
         return id;
     }
