@@ -13,7 +13,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            // Disable CSRF (required for POST/PUT/DELETE from Swagger & Postman)
             .csrf(csrf -> csrf.disable())
 
             // Enable CORS
