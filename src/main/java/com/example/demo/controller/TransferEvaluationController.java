@@ -1,37 +1,34 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+@Entity
+public class TransferEvaluationResult {
 
-import com.example.demo.entity.TransferEvaluationResult;
-import com.example.demo.service.impl.TransferEvaluationServiceImpl;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@RestController
-@RequestMapping("/evaluations")
-public class TransferEvaluationController {
+    private Boolean isEligibleForTransfer;
+    private Double overlapPercentage;
+    private String notes;
+    private Long sourceCourseId;
 
-    @Autowired
-    private TransferEvaluationServiceImpl evaluationService;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @PostMapping
-    public TransferEvaluationResult evaluateTransfer(
-            @RequestParam Long sourceCourseId,
-            @RequestParam Long targetCourseId) {
+    public Boolean getIsEligibleForTransfer() { return isEligibleForTransfer; }
+    public void setIsEligibleForTransfer(Boolean eligible) { this.isEligibleForTransfer = eligible; }
 
-        return evaluationService.evaluateTransfer(sourceCourseId, targetCourseId);
-    }
+    public Double getOverlapPercentage() { return overlapPercentage; }
+    public void setOverlapPercentage(Double overlapPercentage) { this.overlapPercentage = overlapPercentage; }
 
-    @GetMapping("/{id}")
-    public TransferEvaluationResult getEvaluation(@PathVariable Long id) {
-        return evaluationService.getEvaluationById(id);
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
-    @GetMapping("/course/{courseId}")
-    public List<TransferEvaluationResult> getEvaluationsForCourse(
-            @PathVariable Long courseId) {
-
-        return evaluationService.getEvaluationsForCourse(courseId);
-    }
+    public Long getSourceCourseId() { return sourceCourseId; }
+    public void setSourceCourseId(Long sourceCourseId) { this.sourceCourseId = sourceCourseId; }
 }

@@ -1,5 +1,10 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.Course;
 import com.example.demo.entity.CourseContentTopic;
 import com.example.demo.entity.TransferEvaluationResult;
@@ -8,85 +13,88 @@ import com.example.demo.repository.CourseContentTopicRepository;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.TransferEvaluationResultRepository;
 import com.example.demo.repository.TransferRuleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import com.example.demo.service.TransferEvaluationService;
 
 @Service
-public class TransferEvaluationServiceImpl {
+public class TransferEvaluationServiceImpl implements TransferEvaluationService {
 
     @Autowired
-    private CourseRepository courseRepository;
-
+    private CourseRepository courseRepo;
     @Autowired
-    private CourseContentTopicRepository topicRepository;
-
+    private CourseContentTopicRepository topicRepo;
     @Autowired
-    private TransferRuleRepository ruleRepository;
-
+    private TransferRuleRepository ruleRepo;
     @Autowired
-    private TransferEvaluationResultRepository resultRepository;
+    private TransferEvaluationResultRepository resultRepo;
 
-    public TransferEvaluationResult evaluateTransfer(Long sourceCourseId,
-                                                     Long targetCourseId) {
+    @Override
+    public TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId) {
 
-        Course source = courseRepository.findById(sourceCourseId)
+        Course src = courseRepo.findById(sourceCourseId)
                 .orElseThrow(() -> new RuntimeException("Source course not found"));
-        Course target = courseRepository.findById(targetCourseId)
+        Course tgt = courseRepo.findById(targetCourseId)
                 .orElseThrow(() -> new RuntimeException("Target course not found"));
 
-        List<CourseContentTopic> sourceTopics =
-                topicRepository.findByCourseId(sourceCourseId);
-        List<CourseContentTopic> targetTopics =
-                topicRepository.findByCourseId(targetCourseId);
+        if (!src.isActive() || !tgt.isActive()) {
+            throw new IllegalArgumentException("Courses must be active");
+        }
 
-        double matchedWeight = 0;
-        for (CourseContentTopic s : sourceTopics) {
-            for (CourseContentTopic t : targetTopics) {
+        List<CourseContentTopic> srcTopics = topicRepo.findByCourseId(sourceCourseId);
+        List<CourseContentTopic> tgtTopics = topicRepo.findByCourseId(targetCourseId);
+
+        double overlap = 0;
+        for (CourseContentTopic s : srcTopics) {
+            for (CourseContentTopic t : tgtTopics) {
                 if (s.getTopicName().equalsIgnoreCase(t.getTopicName())) {
-                    matchedWeight += Math.min(
-                            s.getWeightPercentage(),
-                            t.getWeightPercentage()
-                    );
+                    overlap += Math.min(s.getWeightPercentage(), t.getWeightPercentage());
                 }
             }
         }
 
-        double overlapPercentage = matchedWeight;
+        if (srcTopics.isEmpty()) {
+            overlap = 0;
+        }
 
-        List<TransferRule> rules =
-                ruleRepository.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
-                        source.getUniversity().getId(),
-                        target.getUniversity().getId()
-                );
+        List<TransferRule> rules = ruleRepo
+                .findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
+                        src.getUniversity().getId(),
+                        tgt.getUniversity().getId());
 
         boolean eligible = false;
-        for (TransferRule rule : rules) {
-            int tolerance = rule.getCreditHourTolerance() == null ? 0
-                    : rule.getCreditHourTolerance();
-            if (overlapPercentage >= rule.getMinimumOverlapPercentage()
-                    && Math.abs(source.getCreditHours() - target.getCreditHours()) <= tolerance) {
+        String notes = "No active rule satisfied";
+
+        for (TransferRule r : rules) {
+            boolean creditOk = Math.abs(src.getCreditHours() - tgt.getCreditHours())
+                    <= r.getCreditHourTolerance();
+
+            if (overlap >= r.getMinimumOverlapPercentage() && creditOk) {
                 eligible = true;
+                notes = "Eligible based on transfer rule";
                 break;
             }
         }
 
-        TransferEvaluationResult result = new TransferEvaluationResult();
-        result.setSourceCourseId(sourceCourseId);
-        result.setOverlapPercentage(overlapPercentage);
-        result.setIsEligibleForTransfer(eligible);
-        result.setNotes(eligible ? "Eligible" : "Not Eligible");
+        if (rules.isEmpty()) {
+            notes = "No active transfer rule";
+        }
 
-        return resultRepository.save(result);
+        TransferEvaluationResult res = new TransferEvaluationResult();
+        res.setSourceCourseId(sourceCourseId);
+        res.setOverlapPercentage(overlap);
+        res.setIsEligibleForTransfer(eligible);
+        res.setNotes(notes);
+
+        return resultRepo.save(res);
     }
 
+    @Override
     public TransferEvaluationResult getEvaluationById(Long id) {
-        return resultRepository.findById(id)
+        return resultRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Evaluation not found"));
     }
 
+    @Override
     public List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId) {
-        return resultRepository.findBySourceCourseId(courseId);
+        return resultRepo.findBySourceCourseId(courseId);
     }
 }
