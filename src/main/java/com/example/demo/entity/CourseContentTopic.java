@@ -19,10 +19,6 @@ public class CourseContentTopic {
     @ManyToOne
     private Course course;
 
-    public CourseContentTopic() {
-    }
-
-    // getters & setters
     public Long getId() {
         return id;
     }
@@ -55,3 +51,4 @@ public class CourseContentTopic {
         this.course = course;
     }
 }
+ 

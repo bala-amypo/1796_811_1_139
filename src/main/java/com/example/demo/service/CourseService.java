@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Course;
 import java.util.List;
+
+import com.example.demo.entity.Course;
 
 public interface CourseService {
 
@@ -11,7 +12,7 @@ public interface CourseService {
 
     Course getCourseById(Long id);
 
-    void deactivateCourse(Long id);
-
     List<Course> getCoursesByUniversity(Long universityId);
+
+    void deactivateCourse(Long id);
 }
