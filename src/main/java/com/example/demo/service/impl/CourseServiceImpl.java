@@ -23,8 +23,7 @@ public class CourseServiceImpl {
         }
 
         Long universityId = course.getUniversity().getId();
-        universityRepository.findById(universityId)
-                .orElseThrow(() -> new RuntimeException("University not found"));
+        universityRepository.findById(universityId).orElseThrow(() -> new RuntimeException("University not found"));
 
         return courseRepository.save(course);
     }
