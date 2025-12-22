@@ -20,7 +20,6 @@ public class TransferEvaluationResult {
     public TransferEvaluationResult() {
     }
 
-    // getters & setters
     public Long getId() {
         return id;
     }
