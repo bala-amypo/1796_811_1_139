@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,6 @@ import com.example.demo.service.TransferEvaluationService;
 
 @Service
 public class TransferEvaluationServiceImpl implements TransferEvaluationService {
-
     @Autowired
     private CourseRepository courseRepo;
     @Autowired
@@ -31,56 +32,59 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     public TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId) {
 
         Course src = courseRepo.findById(sourceCourseId)
-                .orElseThrow(() -> new RuntimeException("Source course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found"));
         Course tgt = courseRepo.findById(targetCourseId)
-                .orElseThrow(() -> new RuntimeException("Target course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found"));
 
         if (!src.isActive() || !tgt.isActive()) {
-            throw new IllegalArgumentException("Courses must be active");
+            throw new IllegalArgumentException("Course must be active");
         }
 
         List<CourseContentTopic> srcTopics = topicRepo.findByCourseId(sourceCourseId);
         List<CourseContentTopic> tgtTopics = topicRepo.findByCourseId(targetCourseId);
 
-        double overlap = 0;
-        for (CourseContentTopic s : srcTopics) {
-            for (CourseContentTopic t : tgtTopics) {
-                if (s.getTopicName().equalsIgnoreCase(t.getTopicName())) {
-                    overlap += Math.min(s.getWeightPercentage(), t.getWeightPercentage());
-                }
+        Map<String, Double> srcMap = new HashMap<>();
+        for (CourseContentTopic t : srcTopics) {
+            srcMap.put(t.getTopicName().toLowerCase(), t.getWeightPercentage());
+        }
+
+        double overlap = 0.0;
+        for (CourseContentTopic t : tgtTopics) {
+            String key = t.getTopicName().toLowerCase();
+            if (srcMap.containsKey(key)) {
+                overlap += Math.min(srcMap.get(key), t.getWeightPercentage());
             }
-        }
-
-        if (srcTopics.isEmpty()) {
-            overlap = 0;
-        }
-
-        List<TransferRule> rules = ruleRepo
-                .findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
-                        src.getUniversity().getId(),
-                        tgt.getUniversity().getId());
-
-        boolean eligible = false;
-        String notes = "No active rule satisfied";
-
-        for (TransferRule r : rules) {
-            boolean creditOk = Math.abs(src.getCreditHours() - tgt.getCreditHours())
-                    <= r.getCreditHourTolerance();
-
-            if (overlap >= r.getMinimumOverlapPercentage() && creditOk) {
-                eligible = true;
-                notes = "Eligible based on transfer rule";
-                break;
-            }
-        }
-
-        if (rules.isEmpty()) {
-            notes = "No active transfer rule";
         }
 
         TransferEvaluationResult res = new TransferEvaluationResult();
         res.setSourceCourseId(sourceCourseId);
+        res.setTargetCourseId(targetCourseId);
         res.setOverlapPercentage(overlap);
+
+        List<TransferRule> rules =
+                ruleRepo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
+                        src.getUniversity().getId(),
+                        tgt.getUniversity().getId());
+
+        boolean eligible = false;
+        String notes = "No active transfer rule";
+
+        for (TransferRule r : rules) {
+            boolean overlapOk = overlap >= r.getMinimumOverlapPercentage();
+            boolean creditOk = Math.abs(src.getCreditHours() - tgt.getCreditHours())
+                    <= (r.getCreditHourTolerance() == null ? 0 : r.getCreditHourTolerance());
+
+            if (overlapOk && creditOk) {
+                eligible = true;
+                notes = "Transfer eligible";
+                break;
+            }
+        }
+
+        if (!eligible && !rules.isEmpty()) {
+            notes = "No active rule satisfied";
+        }
+
         res.setIsEligibleForTransfer(eligible);
         res.setNotes(notes);
 
@@ -94,7 +98,7 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     }
 
     @Override
-    public List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId) {
-        return resultRepo.findBySourceCourseId(courseId);
+    public List<TransferEvaluationResult> getEvaluationsForCourse(Long sourceCourseId) {
+        return resultRepo.findBySourceCourseId(sourceCourseId);
     }
 }

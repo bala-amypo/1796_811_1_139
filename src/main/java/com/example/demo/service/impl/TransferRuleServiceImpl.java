@@ -21,22 +21,23 @@ public class TransferRuleServiceImpl implements TransferRuleService {
 
     @Override
     public TransferRule createRule(TransferRule rule) {
-        if (rule.getMinimumOverlapPercentage() < 0 || rule.getMinimumOverlapPercentage() > 100) {
+        if (rule.getMinimumOverlapPercentage() == null ||
+                rule.getMinimumOverlapPercentage() < 0 ||
+                rule.getMinimumOverlapPercentage() > 100) {
             throw new IllegalArgumentException("Overlap must be 0-100");
         }
 
         if (rule.getCreditHourTolerance() != null && rule.getCreditHourTolerance() < 0) {
-            throw new IllegalArgumentException("Credit tolerance must be >= 0");
+            throw new IllegalArgumentException("Tolerance must be >= 0");
         }
 
         University s = univRepo.findById(rule.getSourceUniversity().getId())
-                .orElseThrow(() -> new RuntimeException("Source university not found"));
+                .orElseThrow(() -> new RuntimeException("University not found"));
         University t = univRepo.findById(rule.getTargetUniversity().getId())
-                .orElseThrow(() -> new RuntimeException("Target university not found"));
+                .orElseThrow(() -> new RuntimeException("University not found"));
 
         rule.setSourceUniversity(s);
         rule.setTargetUniversity(t);
-
         return repo.save(rule);
     }
 
@@ -44,8 +45,6 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     public TransferRule updateRule(Long id, TransferRule rule) {
         TransferRule existing = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rule not found"));
-        existing.setMinimumOverlapPercentage(rule.getMinimumOverlapPercentage());
-        existing.setCreditHourTolerance(rule.getCreditHourTolerance());
         return repo.save(existing);
     }
 
@@ -56,9 +55,8 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     }
 
     @Override
-    public List<TransferRule> getRulesForUniversities(Long sourceUniversityId, Long targetUniversityId) {
-        return repo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
-                sourceUniversityId, targetUniversityId);
+    public List<TransferRule> getRulesForUniversities(Long sId, Long tId) {
+        return repo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(sId, tId);
     }
 
     @Override

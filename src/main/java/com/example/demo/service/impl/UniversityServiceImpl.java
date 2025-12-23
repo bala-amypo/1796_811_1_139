@@ -35,7 +35,6 @@ public class UniversityServiceImpl implements UniversityService {
         if (university.getName() != null) {
             existing.setName(university.getName());
         }
-
         return repository.save(existing);
     }
 
