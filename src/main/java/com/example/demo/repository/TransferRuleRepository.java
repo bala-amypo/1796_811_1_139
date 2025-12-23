@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.TransferRule;
 
 @Repository
-public interface TransferRuleRepository extends JpaRepository<TransferRule, Long> {
+public interface TransferRuleRepository
+        extends JpaRepository<TransferRule, Long> {
 
     List<TransferRule> findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
             Long sourceUniversityId,

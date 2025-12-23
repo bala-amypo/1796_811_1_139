@@ -1,12 +1,9 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "course_content_topics")
 public class CourseContentTopic {
 
     @Id
@@ -17,8 +14,10 @@ public class CourseContentTopic {
     private Double weightPercentage;
 
     @ManyToOne
+    @JoinColumn(name = "course_id")
     private Course course;
 
+    // getters & setters
     public Long getId() {
         return id;
     }
@@ -51,4 +50,3 @@ public class CourseContentTopic {
         this.course = course;
     }
 }
- 

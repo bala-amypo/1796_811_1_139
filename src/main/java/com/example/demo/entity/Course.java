@@ -1,12 +1,14 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(
+    name = "courses",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"university_id", "courseCode"})
+    }
+)
 public class Course {
 
     @Id
@@ -19,6 +21,7 @@ public class Course {
     private boolean active = true;
 
     @ManyToOne
+    @JoinColumn(name = "university_id")
     private University university;
 
     public Long getId() {

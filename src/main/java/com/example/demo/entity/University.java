@@ -1,12 +1,9 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "universities")
 public class University {
 
     @Id
@@ -18,6 +15,7 @@ public class University {
 
     private boolean active = true;
 
+    // getters & setters
     public Long getId() {
         return id;
     }
