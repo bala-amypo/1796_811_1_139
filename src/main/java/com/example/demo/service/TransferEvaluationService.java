@@ -10,5 +10,5 @@ public interface TransferEvaluationService {
 
     TransferEvaluationResult getEvaluationById(Long id);
 
-    List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId);
+    List<TransferEvaluationResult> getEvaluationsForCourse(Long sourceCourseId);
 }
