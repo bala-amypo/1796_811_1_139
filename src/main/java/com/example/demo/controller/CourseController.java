@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Course;
-import com.example.demo.service.impl.CourseServiceImpl;
+import com.example.demo.service.CourseService;
 
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
-    private CourseServiceImpl courseService;
+    private CourseService courseService;
 
     @PostMapping
     public Course createCourse(@RequestBody Course course) {
@@ -21,7 +21,8 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody Course course) {
+    public Course updateCourse(@PathVariable Long id,
+                               @RequestBody Course course) {
         return courseService.updateCourse(id, course);
     }
 
@@ -35,7 +36,7 @@ public class CourseController {
         return courseService.getCoursesByUniversity(universityId);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}/deactivate")
     public void deactivateCourse(@PathVariable Long id) {
         courseService.deactivateCourse(id);
     }

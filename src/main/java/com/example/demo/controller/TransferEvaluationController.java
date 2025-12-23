@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TransferEvaluationResult;
@@ -11,26 +12,26 @@ import com.example.demo.service.TransferEvaluationService;
 @RequestMapping("/evaluations")
 public class TransferEvaluationController {
 
-    private final TransferEvaluationService service;
+    @Autowired
+    private TransferEvaluationService evaluationService;
 
-    public TransferEvaluationController(TransferEvaluationService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public TransferEvaluationResult evaluate(
+    @PostMapping("/evaluate")
+    public TransferEvaluationResult evaluateTransfer(
             @RequestParam Long sourceCourseId,
             @RequestParam Long targetCourseId) {
-        return service.evaluateTransfer(sourceCourseId, targetCourseId);
+
+        return evaluationService.evaluateTransfer(sourceCourseId, targetCourseId);
     }
 
     @GetMapping("/{id}")
-    public TransferEvaluationResult getById(@PathVariable Long id) {
-        return service.getEvaluationById(id);
+    public TransferEvaluationResult getEvaluation(@PathVariable Long id) {
+        return evaluationService.getEvaluationById(id);
     }
 
     @GetMapping("/course/{courseId}")
-    public List<TransferEvaluationResult> getByCourse(@PathVariable Long courseId) {
-        return service.getEvaluationsForCourse(courseId);
+    public List<TransferEvaluationResult> getEvaluationsForCourse(
+            @PathVariable Long courseId) {
+
+        return evaluationService.getEvaluationsForCourse(courseId);
     }
 }

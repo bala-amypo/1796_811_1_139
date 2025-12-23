@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.University;
@@ -11,34 +12,32 @@ import com.example.demo.service.UniversityService;
 @RequestMapping("/universities")
 public class UniversityController {
 
-    private final UniversityService service;
-
-    public UniversityController(UniversityService service) {
-        this.service = service;
-    }
+    @Autowired
+    private UniversityService universityService;
 
     @PostMapping
-    public University create(@RequestBody University university) {
-        return service.createUniversity(university);
+    public University createUniversity(@RequestBody University university) {
+        return universityService.createUniversity(university);
     }
 
     @PutMapping("/{id}")
-    public University update(@PathVariable Long id, @RequestBody University university) {
-        return service.updateUniversity(id, university);
+    public University updateUniversity(@PathVariable Long id,
+                                       @RequestBody University university) {
+        return universityService.updateUniversity(id, university);
     }
 
     @GetMapping("/{id}")
-    public University getById(@PathVariable Long id) {
-        return service.getUniversityById(id);
+    public University getUniversity(@PathVariable Long id) {
+        return universityService.getUniversityById(id);
     }
 
     @GetMapping
-    public List<University> getAll() {
-        return service.getAllUniversities();
+    public List<University> getAllUniversities() {
+        return universityService.getAllUniversities();
     }
 
-    @DeleteMapping("/{id}")
-    public void deactivate(@PathVariable Long id) {
-        service.deactivateUniversity(id);
+    @PutMapping("/{id}/deactivate")
+    public void deactivateUniversity(@PathVariable Long id) {
+        universityService.deactivateUniversity(id);
     }
 }
