@@ -28,7 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
 
             if (jwtTokenProvider.validateToken(token)) {
-                // We are NOT enforcing roles in this project
                 SecurityContextHolder.clearContext();
             }
         }
